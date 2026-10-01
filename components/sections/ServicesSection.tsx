@@ -6,23 +6,25 @@ import { SERVICE_ICONS, SERVICE_ICONS_OUTLINE } from "@/components/icons/Service
 import { MaterialIcon } from "@/components/icons/MaterialIcon";
 import { Reveal } from "@/components/motion/Reveal";
 import { useCheckout } from "@/context/CheckoutContext";
-import { SERVICE_CARDS } from "@/data/marketing";
+import { useStore } from "@/context/StoreContext";
 
 const SEARCH_PLACEHOLDER = "Cari layanan… cth: PLN, BPJS, paket data";
 
 export function ServicesSection() {
   const { open } = useCheckout();
+  // Daftar layanan berasal dari tabel products Supabase (nama, urutan, status).
+  const { serviceCards } = useStore();
   const [query, setQuery] = useState("");
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return SERVICE_CARDS;
-    return SERVICE_CARDS.filter((service) =>
+    if (!q) return serviceCards;
+    return serviceCards.filter((service) =>
       `${service.name} ${service.description} ${service.id}`
         .toLowerCase()
         .includes(q),
     );
-  }, [query]);
+  }, [query, serviceCards]);
 
   return (
     <section
@@ -82,7 +84,7 @@ export function ServicesSection() {
               >
                 {query.trim()
                   ? `${results.length} layanan cocok`
-                  : `${SERVICE_CARDS.length} layanan tersedia`}
+                  : `${serviceCards.length} layanan tersedia`}
               </p>
             </div>
           </div>

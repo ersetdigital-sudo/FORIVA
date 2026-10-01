@@ -22,6 +22,57 @@
   --shadow-soft-card: 0 20px 40px -15px rgba(11, 19, 48, 0.05);
   --shadow-soft-elevated: 0 25px 50px -12px rgba(11, 19, 48, 0.12);
   --shadow-soft-drawer: 0 25px 50px rgba(11, 19, 48, 0.15);
+
+  /* ------------------------------------------------------------------
+     Dashboard admin — design tokens "Alabaster Grid Console"
+     Canvas cool paper, panel putih, depth dari hairline (bukan shadow bloom),
+     satu warna aksen ink-teal.
+     ------------------------------------------------------------------ */
+  --color-console: #f4f6f8;
+  --color-panel: #ffffff;
+  --color-rail: #eef1f4;
+  --color-bone: #e7ebef;
+  --color-hairline: #e2e7ec;
+  --color-ink: #16202b;
+  --color-ink-soft: #5b6673;
+  --color-ink-faint: #8a949e;
+  --color-accent: #0e7c86;
+  --color-accent-dark: #0b6169;
+  --color-accent-soft: #e4f2f3;
+  --color-signal: #a85a0b;
+
+  --shadow-console-lift: 0 10px 28px -14px rgba(14, 17, 20, 0.22);
+  --shadow-console-ring: 0 0 0 1px var(--color-hairline), 0 1px 2px rgba(14, 17, 20, 0.04);
+
+  /* ------------------------------------------------------------------
+     Halaman login admin — design tokens "Linen Meridian"
+     Kertas linen hangat + satu aksen fired-clay; sisi gelap = ruangan
+     yang sama setelah senja (umber hangat, bukan abu netral).
+     ------------------------------------------------------------------ */
+  --color-linen: #faf7f2;
+  --color-linen-bone: #f0eae0;
+  --color-linen-line: #e7dfd3;
+  --color-umber: #1a1714;
+  --color-umber-stone: #292420;
+  --color-umber-lifted: #332c26;
+  --color-ink-warm: #1c1b1a;
+  --color-ink-warm-soft: #6e655c;
+  --color-clay: #9a3412;
+  --color-clay-deep: #7f2a0e;
+  --color-apricot: #e8a06a;
+  --color-warm-danger: #a3453a;
+}
+
+/* ------------------------------------------------------------------
+   Font di-inline (`@theme inline`) karena nilainya memakai var() dari
+   next/font yang dipasang di elemen pembungkus, bukan di :root. Tanpa
+   `inline`, var-nya sudah invalid saat diwariskan ke elemen anak.
+   ------------------------------------------------------------------ */
+@theme inline {
+  --font-console: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-console-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-editorial: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-linen-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -160,5 +211,30 @@
 @media (prefers-reduced-motion: reduce) {
   .deal-shimmer {
     animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Login admin — permukaan browser ikut didesain (selection, caret,
+   focus ring) memakai palet Linen Meridian, bukan default bawaan.
+   ------------------------------------------------------------------ */
+.login-world ::selection {
+  background: #e8a06a;
+  color: #1a1714;
+}
+
+.login-world input {
+  caret-color: #9a3412;
+}
+
+.login-world input::placeholder {
+  color: #6e655c;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-world * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
   }
 }

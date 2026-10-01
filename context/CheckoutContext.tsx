@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { EMONEY_PROVIDERS } from "@/data/emoney";
-import { PPOB_PRODUCTS } from "@/data/ppob";
+import { useStore } from "@/context/StoreContext";
 import { onlyDigits } from "@/lib/format";
 import { randomInvoice, randomPlnToken, randomSerialNumber } from "@/lib/generate";
 import { detectOperator } from "@/lib/operator";
@@ -93,7 +93,9 @@ export function CheckoutProvider({ children }: { children: React.ReactNode }) {
   const [plnToken, setPlnToken] = useState<string | null>(null);
 
   const confirmTimer = useRef<number | null>(null);
-  const catalog = PPOB_PRODUCTS[category];
+  // Katalog & biaya admin dibaca dari Supabase (lewat StoreProvider).
+  const { catalog: catalogData } = useStore();
+  const catalog = catalogData[category];
   const usesProvider = category === PROVIDER_BASED;
 
   const detected = useMemo(

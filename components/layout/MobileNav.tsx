@@ -7,7 +7,7 @@ import { useMobileNavContext } from "@/context/MobileNavContext";
 import { useTransactionsContext } from "@/context/TransactionContext";
 import { MOBILE_MENU_LINKS } from "@/data/navigation";
 import { useScrollLock } from "@/hooks/useScrollLock";
-import { WA_CS_LINK } from "@/lib/constants";
+import { useStore } from "@/context/StoreContext";
 import type { CategoryKey } from "@/types";
 
 const QUICK_PILLS: {
@@ -25,6 +25,8 @@ export function MobileNav() {
   const { isOpen, open: openMenu, close } = useMobileNavContext();
   const { open: openCheckout } = useCheckout();
   const { open: openTransactions } = useTransactionsContext();
+  // Nama brand & nomor CS mengikuti tabel settings Supabase.
+  const { settings, waCsLink } = useStore();
 
   useScrollLock(isOpen);
 
@@ -61,11 +63,11 @@ export function MobileNav() {
               <div className="p-5 border-b border-navy/10 flex items-center justify-between bg-offwhite shrink-0">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 bg-cobalt text-lime font-heading font-bold text-base flex items-center justify-center rounded-xl shadow-sm">
-                    F
+                    {settings.nama_brand.charAt(0)}
                   </div>
                   <div className="flex flex-col">
                     <span className="font-heading font-bold text-lg tracking-tight text-navy leading-none">
-                      FORIVA
+                      {settings.nama_brand}
                     </span>
                     <span className="text-[9px] font-bold tracking-widest text-cobalt uppercase mt-0.5">
                       Menu Cepat
@@ -186,7 +188,7 @@ export function MobileNav() {
 
               <div className="p-4 border-t border-navy/10 bg-offwhite shrink-0 space-y-3">
                 <a
-                  href={WA_CS_LINK}
+                  href={waCsLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 bg-lime text-navy font-heading font-bold text-xs py-3 rounded-xl shadow-sm hover:bg-white transition-all text-center"
@@ -195,7 +197,7 @@ export function MobileNav() {
                   <span>Bantuan CS WhatsApp (24/7)</span>
                 </a>
                 <div className="text-center text-[10px] text-navy/50 font-medium">
-                  Foriva PPOB Direct • v2.4 • 100% Guest Checkout
+                  {settings.nama_brand} PPOB Direct • v2.4 • 100% Guest Checkout
                 </div>
               </div>
             </motion.aside>

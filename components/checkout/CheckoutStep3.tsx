@@ -1,16 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import { ClockIcon, CopyIcon, TimerExpiredIcon } from "@/components/icons/UiIcons";
 import { useCheckout } from "@/context/CheckoutContext";
+import { useStore } from "@/context/StoreContext";
 import { useToast } from "@/context/ToastContext";
 import { formatCountdown, formatRupiah } from "@/lib/format";
-import { QRIS_IMAGE, QRIS_NMID } from "@/lib/constants";
+import { optimizedImageUrl } from "@/lib/image";
 
 export function CheckoutStep3() {
   const { invoice, totals, secondsLeft, isExpired, confirmPayment, restart } =
     useCheckout();
   const { copy } = useToast();
+  // Gambar QRIS & NMID dibaca dari tabel settings Supabase.
+  const { settings } = useStore();
 
   const totalLabel = formatRupiah(totals?.total ?? 0);
 
@@ -37,15 +39,24 @@ export function CheckoutStep3() {
             </div>
 
             <div className="bg-white border border-navy/10 rounded-2xl p-5 max-w-[240px] mx-auto shadow-sm">
-              <Image
-                src={QRIS_IMAGE}
-                alt="Kode QRIS Pembayaran Foriva"
-                width={512}
-                height={279}
-                className="w-full h-auto rounded-lg block mx-auto"
-              />
+              {settings.gambar_qris_url ? (
+                // Gambar QRIS dari Cloudinary: f_auto + q_auto supaya hemat kuota.
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={optimizedImageUrl(settings.gambar_qris_url, "f_auto,q_auto,w_512")}
+                  alt={`Kode QRIS Pembayaran ${settings.nama_brand}`}
+                  width={512}
+                  height={279}
+                  loading="lazy"
+                  className="w-full h-auto rounded-lg block mx-auto"
+                />
+              ) : (
+                <div className="py-8 text-center text-[11px] text-navy/50">
+                  Gambar QRIS belum diatur admin.
+                </div>
+              )}
               <div className="mt-2 text-[10px] font-semibold text-navy/50 tracking-wider uppercase">
-                NMID: {QRIS_NMID}
+                NMID: {settings.qris_nmid || "—"}
               </div>
             </div>
 

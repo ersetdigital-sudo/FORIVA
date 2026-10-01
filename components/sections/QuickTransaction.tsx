@@ -5,7 +5,7 @@ import { SERVICE_ICONS_OUTLINE } from "@/components/icons/ServiceIcons";
 import { CheckCircleIcon } from "@/components/icons/UiIcons";
 import { BoltOutlineIcon } from "@/components/icons/ServiceIcons";
 import { useCheckout } from "@/context/CheckoutContext";
-import { QUICK_ADMIN_FEE, QUICK_TABS } from "@/data/quickTabs";
+import { useStore } from "@/context/StoreContext";
 import { formatRupiah } from "@/lib/format";
 import { detectOperator } from "@/lib/operator";
 import type { QuickTab } from "@/data/quickTabs";
@@ -13,14 +13,18 @@ import type { PpobItem } from "@/types";
 
 export function QuickTransaction() {
   const { open, setTarget: setCheckoutTarget } = useCheckout();
-  const [activeTab, setActiveTab] = useState<QuickTab>(QUICK_TABS[0]);
-  const [nominal, setNominal] = useState<PpobItem>(QUICK_TABS[0].nominals[0]);
+  // Tab & nominal cepat dibaca dari Supabase (flag "Cepat" di dashboard admin).
+  const { quickTabs, catalog } = useStore();
+  const [activeTab, setActiveTab] = useState<QuickTab>(quickTabs[0]);
+  const [nominal, setNominal] = useState<PpobItem>(quickTabs[0].nominals[0]);
   const [target, setTarget] = useState("");
   const [operator, setOperator] = useState<string | null>(null);
 
+  const adminFee = catalog[activeTab.key].admin;
+
   const total = useMemo(
-    () => formatRupiah(nominal.price + QUICK_ADMIN_FEE),
-    [nominal],
+    () => formatRupiah(nominal.price + adminFee),
+    [nominal, adminFee],
   );
 
   const switchTab = (tab: QuickTab) => {
@@ -80,7 +84,7 @@ export function QuickTransaction() {
       </div>
 
       <div className="flex overflow-x-auto gap-2 p-1 bg-offwhite rounded-xl sm:rounded-2xl mb-5 sm:mb-6 text-xs font-heading font-semibold scroll-smooth">
-        {QUICK_TABS.map((tab) => {
+        {quickTabs.map((tab) => {
           const Icon = SERVICE_ICONS_OUTLINE[tab.key];
           const isActive = tab.key === activeTab.key;
 
@@ -146,7 +150,7 @@ export function QuickTransaction() {
               Pilihan Nominal Cepat:
             </span>
             <span className="text-[11px] text-navy/50 font-medium">
-              Biaya Admin Rp1.000
+              Biaya Admin {formatRupiah(adminFee)}
             </span>
           </div>
           <div className="grid grid-cols-3 gap-2 sm:gap-2.5">

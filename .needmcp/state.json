@@ -1,0 +1,13 @@
+{
+  "style": {
+    "slug": "linen-meridian",
+    "name": "Linen Meridian",
+    "updated_at": "2026-10-01T06:10:00.000Z"
+  },
+  "dashboard_style": {
+    "slug": "alabaster-grid-console",
+    "name": "Alabaster Grid Console",
+    "applied_to": "dashboard admin (shell, produk, pengaturan, kelola pesanan)"
+  },
+  "updated_at": "2026-10-01T06:10:00.000Z"
+}

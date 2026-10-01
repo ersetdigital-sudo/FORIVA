@@ -12,7 +12,7 @@ import {
   HELP_POPULAR_IDS,
   type HelpArticle,
 } from "@/data/help";
-import { WA_CS_LINK, WHATSAPP_DISPLAY } from "@/lib/constants";
+import { useStore } from "@/context/StoreContext";
 
 function AccordionItem({
   article,
@@ -69,6 +69,8 @@ export function HelpCenter() {
   const [activeCat, setActiveCat] = useState<string>("all");
   const [openId, setOpenId] = useState<string | null>(null);
   const { open: openTransactions } = useTransactionsContext();
+  // Nomor CS & nama brand mengikuti tabel settings Supabase.
+  const { settings, waCsLink, waDisplay } = useStore();
 
   const popularArticles = useMemo(
     () =>
@@ -129,7 +131,7 @@ export function HelpCenter() {
       <section className="pt-10 sm:pt-14 pb-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
         <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-navy/70 mb-4">
           <span className="w-2 h-2 rounded-full bg-cobalt" />
-          Pusat Bantuan Foriva
+          Pusat Bantuan {settings.nama_brand}
         </div>
         <h1 className="font-heading font-bold text-3xl sm:text-5xl text-navy tracking-tight">
           Ada yang bisa kami bantu?
@@ -356,7 +358,7 @@ export function HelpCenter() {
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
-                  href={WA_CS_LINK}
+                  href={waCsLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2.5 bg-lime text-navy font-heading font-bold px-6 py-3.5 rounded-xl hover:bg-white transition-all"
@@ -374,7 +376,7 @@ export function HelpCenter() {
                 </button>
               </div>
               <p className="mt-5 text-xs text-white/50">
-                Nomor resmi: {WHATSAPP_DISPLAY} · Hati-hati pin luar itu palsu.
+                Nomor resmi: {waDisplay} · Hati-hati pin luar itu palsu.
               </p>
             </div>
           </div>

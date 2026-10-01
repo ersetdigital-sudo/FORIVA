@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { WhatsAppIcon } from "@/components/icons/UiIcons";
 import { useCheckout } from "@/context/CheckoutContext";
+import { useStore } from "@/context/StoreContext";
 import { POPULAR_SERVICES } from "@/data/navigation";
-import { WA_CS_LINK, WHATSAPP_DISPLAY } from "@/lib/constants";
 
 export function SiteFooter() {
   const { open } = useCheckout();
+  // Nama brand, tagline, dan nomor CS dibaca dari tabel settings Supabase.
+  const { settings, waCsLink, waDisplay } = useStore();
   const year = new Date().getFullYear();
 
   return (
@@ -17,14 +19,14 @@ export function SiteFooter() {
           <div className="md:col-span-5">
             <div className="flex items-center gap-2.5 mb-3">
               <div className="w-9 h-9 bg-lime text-navy font-heading font-bold text-xl flex items-center justify-center rounded-xl">
-                F
+                {settings.nama_brand.charAt(0)}
               </div>
               <span className="font-heading font-bold text-2xl tracking-tight text-white">
-                FORIVA
+                {settings.nama_brand}
               </span>
             </div>
             <p className="text-lime font-heading font-bold text-lg mb-3">
-              “Tagihan beres, hidup lanjut.”
+              “{settings.tagline}”
             </p>
             <p className="text-white/75 text-sm max-w-sm leading-relaxed font-normal">
               Platform pembayaran PPOB direct tanpa akun. Cepat, transparan, dan
@@ -65,7 +67,7 @@ export function SiteFooter() {
             </p>
             <a
               className="inline-flex items-center gap-2.5 bg-lime text-navy font-heading font-semibold px-5 py-3 rounded-xl hover:bg-white transition-all"
-              href={WA_CS_LINK}
+              href={waCsLink}
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -73,14 +75,14 @@ export function SiteFooter() {
               <span>Chat CS WhatsApp (24/7)</span>
             </a>
             <div className="mt-4 text-xs text-white/60">
-              Nomor CS: {WHATSAPP_DISPLAY} (Resmi)
+              Nomor CS: {waDisplay} (Resmi)
             </div>
           </div>
         </div>
 
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/60 gap-4">
           <div>
-            © {year} Foriva PPOB Network. Hak Cipta Dilindungi.
+            © {year} {settings.nama_brand} PPOB Network. Hak Cipta Dilindungi.
           </div>
           <div className="flex gap-6 font-medium">
             <a className="hover:text-lime transition-colors" href="#">

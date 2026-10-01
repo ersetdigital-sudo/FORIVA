@@ -5,7 +5,7 @@ import { MaterialIcon } from "@/components/icons/MaterialIcon";
 import { useTransactionsContext } from "@/context/TransactionContext";
 import { useToast } from "@/context/ToastContext";
 import { useScrollLock } from "@/hooks/useScrollLock";
-import { WA_TRACK_LINK } from "@/lib/constants";
+import { useStore } from "@/context/StoreContext";
 import { formatRupiah } from "@/lib/format";
 import type { TransactionRecord } from "@/types";
 
@@ -31,6 +31,8 @@ export function CheckTransactionModal() {
   const { isOpen, close, query, setQuery, result, search } =
     useTransactionsContext();
   const { copy } = useToast();
+  // Nomor WA bantuan diambil dari tabel settings Supabase.
+  const { waTrackLink } = useStore();
 
   useScrollLock(isOpen);
 
@@ -213,7 +215,7 @@ export function CheckTransactionModal() {
                   </p>
                 </div>
                 <a
-                  href={WA_TRACK_LINK}
+                  href={waTrackLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-white hover:bg-offwhite text-navy font-heading font-bold px-4 py-2 rounded-xl border border-navy/10 flex items-center justify-center gap-1.5 text-xs shrink-0 shadow-sm transition-all"

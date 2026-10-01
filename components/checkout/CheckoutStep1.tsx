@@ -2,8 +2,8 @@
 
 import { MaterialIcon } from "@/components/icons/MaterialIcon";
 import { useCheckout } from "@/context/CheckoutContext";
+import { useStore } from "@/context/StoreContext";
 import { EMONEY_PROVIDER_KEYS, EMONEY_PROVIDERS } from "@/data/emoney";
-import { PPOB_PRODUCTS } from "@/data/ppob";
 import { NominalGrid } from "./NominalGrid";
 
 export function CheckoutStep1() {
@@ -27,7 +27,8 @@ export function CheckoutStep1() {
     proceedToReview,
   } = useCheckout();
 
-  const catalog = PPOB_PRODUCTS[category];
+  const { catalog: catalogData } = useStore();
+  const catalog = catalogData[category];
   const items = provider ? provider.nominals : catalog.items;
   const adminFee = provider ? provider.admin : catalog.admin;
 

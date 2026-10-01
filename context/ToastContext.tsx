@@ -10,14 +10,17 @@ import {
 } from "react";
 import { copyText } from "@/hooks/useScrollLock";
 
+export type ToastTone = "success" | "error";
+
 interface Toast {
   id: number;
   message: string;
+  tone: ToastTone;
 }
 
 interface ToastContextValue {
   toasts: Toast[];
-  showToast: (message: string) => void;
+  showToast: (message: string, tone?: ToastTone) => void;
   copy: (text: string, message: string) => Promise<void>;
 }
 
@@ -27,10 +30,10 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const idRef = useRef(0);
 
-  const showToast = useCallback((message: string) => {
+  const showToast = useCallback((message: string, tone: ToastTone = "success") => {
     idRef.current += 1;
     const id = idRef.current;
-    setToasts((current) => [...current, { id, message }]);
+    setToasts((current) => [...current, { id, message, tone }]);
 
     window.setTimeout(() => {
       setToasts((current) => current.filter((toast) => toast.id !== id));

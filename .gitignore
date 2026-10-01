@@ -40,3 +40,5 @@ yarn-error.log*
 .devserver.log
 screen.png
 code.html
+
+.vercel

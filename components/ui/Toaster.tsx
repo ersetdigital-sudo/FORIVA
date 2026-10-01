@@ -16,7 +16,14 @@ export function Toaster() {
           role="status"
           className="animate-fadeIn flex items-center gap-2 rounded-xl bg-navy px-4 py-2.5 font-heading text-xs font-semibold text-white shadow-soft-drawer"
         >
-          <MaterialIcon name="check_circle" className="text-[16px] text-lime" />
+          <MaterialIcon
+            name={toast.tone === "error" ? "error" : "check_circle"}
+            className={
+              toast.tone === "error"
+                ? "text-[16px] text-rose-400"
+                : "text-[16px] text-lime"
+            }
+          />
           {toast.message}
         </div>
       ))}

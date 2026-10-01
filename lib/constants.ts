@@ -13,8 +13,20 @@ export const SITE_URL =
 export const WHATSAPP_NUMBER = "6281234567890";
 export const WHATSAPP_DISPLAY = "+62 812-3456-7890";
 
+/** Bikin link wa.me dari nomor apa pun (nomor dinamis dari tabel settings). */
+export const whatsappLinkTo = (number: string, message: string) =>
+  `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
+
+/** Ubah "6281234567890" jadi "+62 812-3456-7890" untuk ditampilkan. */
+export const formatWaDisplay = (number: string) => {
+  const digits = number.replace(/\D/g, "");
+  const local = digits.startsWith("62") ? digits.slice(2) : digits;
+  if (local.length < 9) return `+${digits}`;
+  return `+62 ${local.slice(0, 3)}-${local.slice(3, 7)}-${local.slice(7)}`;
+};
+
 export const whatsappLink = (message: string) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  whatsappLinkTo(WHATSAPP_NUMBER, message);
 
 export const WA_CS_LINK = whatsappLink(
   "Halo Admin Foriva, saya butuh bantuan transaksi",
